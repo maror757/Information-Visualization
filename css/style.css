@@ -2,3 +2,13 @@
   margin: 0px;
   padding: 0px;
 }
+
+circle {
+  fill: #4A988A;
+}
+text {
+  font-family: "Open Sans";
+  text-anchor: middle;
+  color: rgb(34,​ 34,​ 34);
+  font-size: 12px;
+}
