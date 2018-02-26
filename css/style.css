@@ -3,6 +3,10 @@
   padding: 0px;
 }
 
+body {
+  background-color:  #FFC300;
+}
+
 circle {
   fill: #4A988A;
 }

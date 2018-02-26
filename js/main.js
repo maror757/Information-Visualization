@@ -2,10 +2,10 @@ d3.queue()
   .defer(d3.csv,'./data/dialog.csv')
   .await(draw)
 
-var show;
+var bubbles;
 
 function draw(error, data){
   if (error) throw error
 
-  show = new show(data)
+  bubbles = new bubbles(data)
 }

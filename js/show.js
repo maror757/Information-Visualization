@@ -1,46 +1,62 @@
-function show(data){
+function bubbles(data){
 
+    // Calculate
     this.data = data
 
     var character_count;
 
     var character_count = d3.nest()
-   .key(function(d) { return d.Character; })
-   .rollup(function(g) { return g.length })
-   .entries(data);
+        .key(function(d) { return d.Character; })
+        .rollup(function(g) { return g.length })
+        .entries(data);
 
    character_count.sort(function(x, y){
       return d3.descending(x.value, y.value);
    })
 
-   character_count = character_count.slice(0, 10)
+   character_count = character_count.slice(0, 20)
 
-   for (var prop in character_count) {
-     console.log(character_count[prop].value + ' ' + character_count[prop].key)
-   }
+   //for (var prop in character_count) {
+   //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
+   //}
+   //console.log(character_count)
 
-   console.log(character_count)
+   var div = `#root`;
 
-   var div = '#root';
-
-   var height = 500;
-   var parentWidth = $(div).parent().width();
-   var margin = {top: 20, right: 20, bottom: 60, left: 40},
-       width = parentWidth - margin.right - margin.left,
-       height = height - margin.top - margin.bottom
+   var height = 500
+   var width = $(div).parent().width()
 
    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
-   var svg = d3.select(div).append("svg")
-       .attr("width", width + margin.left + margin.right)
-       .attr("height", height + margin.top + margin.bottom)
+   console.log(character_count)
 
-    var circle = svg.selectAll("circle")
-        .data(character_count)
+   var scaleRadius = d3.scaleLinear()
+       .domain([d3.max(character_count.map(function(d){ return d.value })), d3.min(character_count.map(function(d){ return d.value }))])
+       .range([5, 50])
 
-    var circleEnter = circle.enter().append("circle")
+   var sim = d3.forceSimulation()
+       .force(`x`, d3.forceX(0).strength(0.02))
+       .force(`y`, d3.forceY(0).strength(0.02))
+       .force(`collide`, d3.forceCollide( function(d){ return scaleRadius(d.value) + 2}) )
 
-    circleEnter.attr("cy", 60);
-    circleEnter.attr("cx", function(d, i) { return i * 200 + 30; });
-    circleEnter.attr("r", function(d) { return Math.sqrt(d.value); });
+   var root = d3.select(div)
+
+   var svg = root.append(`svg`)
+       .attr(`width`, width)
+       .attr(`height`, height)
+       .append(`g`)
+       .attr(`transform`, `translate(${width/2}, ${height/2})`)
+
+   var nodes = svg.selectAll(`.character`)
+       .data(character_count)
+       .enter().append(`circle`)
+       .attr(`class`, `character`)
+       .attr(`r`, function(d){ return scaleRadius(d.value)})
+       .attr(`fill`, `lightblue`)
+       .attr(`stroke`, `darkgray`)
+
+  sim.nodes(character_count).on(`tick`, function(d){
+    nodes.attr(`cx`, function(d) { return d.x })
+         .attr(`cy`, function(d) { return d.y })
+  })
 }
