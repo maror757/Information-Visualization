@@ -3,9 +3,11 @@ d3.queue()
   .await(draw)
 
 var bubbles;
+var showsankey;
 
 function draw(error, data){
   if (error) throw error
 
   bubbles = new bubbles(data)
+  showsankey = new showsankey(data)
 }

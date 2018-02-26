@@ -3,6 +3,31 @@
 <head>
   <meta charset="utf-8">
   <title>Test</title>
+  
+    <style>
+  .node rect {
+    cursor: move;
+    fill-opacity: .9;
+    shape-rendering: crispEdges;
+  }
+
+  .node text {
+    pointer-events: none;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  .link {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .2;
+  }
+
+  .link:hover {
+    stroke-opacity: .5;
+  }
+  </style>
+  
+  
   <link rel="stylesheet" href="./css/style">
 </head>
 <body>
@@ -11,8 +36,10 @@
 
   <script src="./lib/jquery.min.js"></script>
   <script src="./lib/d3.min.js"></script>
+  <script src="./lib/sankey.js"></script>
 
   <script src="./js/show.js"></script>
+  <script src="./js/showsankey.js"></script>
   <script src="./js/main.js"></script>
 </body>
 </html>
