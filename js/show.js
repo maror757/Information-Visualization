@@ -8,7 +8,7 @@ function bubbles(data){
     var character_count = d3.nest()
         .key(function(d) { return d.Character; })
         .rollup(function(g) { return g.length })
-        .entries(data);
+        .entries(data)
 
    character_count.sort(function(x, y){
       return d3.descending(x.value, y.value);
@@ -19,7 +19,7 @@ function bubbles(data){
    //for (var prop in character_count) {
    //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
    //}
-   //console.log(character_count)
+
 
    var div = `#root`;
 
@@ -28,16 +28,22 @@ function bubbles(data){
 
    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
-   console.log(character_count)
-
    var scaleRadius = d3.scaleLinear()
-       .domain([d3.max(character_count.map(function(d){ return d.value })), d3.min(character_count.map(function(d){ return d.value }))])
-       .range([5, 50])
+       .domain([d3.min(character_count.map(function(d){ return d.value })),
+                d3.max(character_count.map(function(d){ return d.value }))])
+       .range([5, 80])
+
+       console.log(character_count)
+       console.log(d3.max(character_count.map(function(d){ return d.value })))
+       console.log(d3.min(character_count.map(function(d){ return d.value })))
+       console.log(scaleRadius(9774))
+       console.log(scaleRadius(5000))
+       console.log(scaleRadius(317))
 
    var sim = d3.forceSimulation()
        .force(`x`, d3.forceX(0).strength(0.02))
        .force(`y`, d3.forceY(0).strength(0.02))
-       .force(`collide`, d3.forceCollide( function(d){ return scaleRadius(d.value) + 2}) )
+       .force(`collide`, d3.forceCollide( function(d){ return scaleRadius(d.value) + 1}) )
 
    var root = d3.select(div)
 
