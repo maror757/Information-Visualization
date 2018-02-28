@@ -1,6 +1,6 @@
 function bubbles(data){
 
-    // Calculate
+    // Calculate character_count with d3.nest
     this.data = data
 
     var character_count;
@@ -14,7 +14,7 @@ function bubbles(data){
       return d3.descending(x.value, y.value);
    })
 
-   character_count = character_count.slice(0, 24)
+   character_count = character_count.slice(0, 50)
 
    //for (var prop in character_count) {
    //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
@@ -22,19 +22,20 @@ function bubbles(data){
 
    //console.log(character_count)
 
+   // Add SVGs to DOM
    var div = `#root`;
 
-   var height = 500
+   var height = 800
    var width = $(div).parent().width()
 
-   var format = d3.format(",d");
+   var format = d3.format(`,d`);
    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
-   // Not used
-   var scaleRadius = d3.scaleLinear()
-       .domain([d3.min(character_count.map(function(d){ return d.value })),
-                d3.max(character_count.map(function(d){ return d.value }))])
-       .range([0, 1])
+   // Not used anywhere yet
+   var scaleText = d3.scaleLinear()
+       .domain([d3.min(character_count.map(function(d) { return d.value })),
+                d3.max(character_count.map(function(d) { return d.value }))])
+       .range([10, 35])
 
     var pack = d3.pack()
         .size([width, height])
@@ -49,24 +50,22 @@ function bubbles(data){
         .append(`g`)
         .attr(`transform`, `translate(0, 0)`)
 
-    var node = svg.selectAll(".node")
+    var node = svg.selectAll(`.node`)
         .data(pack(root).leaves())
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" })
+        .enter().append(`g`)
+        .attr(`class`, `node`)
+        .attr(`transform`, function(d) { return `translate(${d.x}, ${d.y})` })
 
-    node.append("circle")
-        .attr("r", function(d) { return d.r })
-        .attr('fill', function(d) { return color(d.data.key) })
-        .attr('stroke', 'grey');
+    node.append(`circle`)
+        .attr(`r`, function(d) { return d.r })
+        .attr(`fill`, function(d) { return color(d.data.key) })
+        .attr(`stroke`, `grey`);
 
-    node.append("title")
-        .text(function(d) { return d.data.key + ": " + format(d.value) })
-
-    node.append("text")
-        .attr("dy", ".3em")
-        .style("text-anchor", "middle")
+    node.append(`text`)
+        .attr(`dy`, `.3em`)
+        .attr(`font-size`, function(d) { return d.r/d.data.key.length*2.5 })
+        .style(`text-anchor`, `middle`)
         .text(function(d) { return d.data.key })
 
-    console.log(root)
+    //console.log(root)
 }
