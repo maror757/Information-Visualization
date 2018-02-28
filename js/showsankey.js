@@ -1,6 +1,8 @@
 function showsankey(data){
 
 this.data = data
+var testdata = data.slice(0,100);
+data = testdata;
 
  var strChar1 = "Cartman"
  var strChar2 = "Cartman"
@@ -201,8 +203,7 @@ function createSankeyGraph (data, stringName1, stringName2)
   var wordArray2 = []
   //var wordArray3 = []
 
-  var newdata = data.slice(0,100);
-  newdata.forEach(function (object) {
+  data.forEach(function (object) {
   for (let prop in object){
     //console.log("object[prop] = ", object[prop])
     if (object[prop] === stringName1) {
