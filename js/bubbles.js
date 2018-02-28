@@ -14,7 +14,7 @@ function bubbles(data){
       return d3.descending(x.value, y.value);
    })
 
-   character_count = character_count.slice(0, 50)
+   character_count = character_count.slice(0, 80)
 
    //for (var prop in character_count) {
    //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
@@ -25,7 +25,7 @@ function bubbles(data){
    // Add SVGs to DOM
    var div = `#root`;
 
-   var height = 800
+   var height = 600
    var width = $(div).parent().width()
 
    var format = d3.format(`,d`);
@@ -41,6 +41,18 @@ function bubbles(data){
         .size([width, height])
         .padding(5)
 
+    var tooltip = d3.select(div)
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .style("color", "white")
+        .style("padding", "8px")
+        .style("background-color", "rgba(0, 0, 0, 0.75)")
+        .style("border-radius", "6px")
+        .style("font", "1em sans-serif")
+        .text("tooltip");
+
     var root = d3.hierarchy({children: character_count})
         .sum(function(d) { return d.value })
 
@@ -50,11 +62,20 @@ function bubbles(data){
         .append(`g`)
         .attr(`transform`, `translate(0, 0)`)
 
+
     var node = svg.selectAll(`.node`)
         .data(pack(root).leaves())
         .enter().append(`g`)
         .attr(`class`, `node`)
         .attr(`transform`, function(d) { return `translate(${d.x}, ${d.y})` })
+        .on("mouseover", function(d) {
+                tooltip.text(d.data.key + ": " + format(d.value));
+                tooltip.style("visibility", "visible");
+        })
+        .on("mousemove", function() {
+            return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
+        })
+        .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
     node.append(`circle`)
         .attr(`r`, function(d) { return d.r })
