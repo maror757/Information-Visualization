@@ -33,87 +33,24 @@ function showsankey(data){
 
 
 
-  //SORT THE DATA
-  var wordArray = []
 
-  var newdata = data.slice(0,10000);
-  newdata.forEach(function (name) {
-  for (let prop in name){
-    //console.log(name[prop]);
-    if (name[prop] === 'Cartman') {
-      //console.log("name[prop] = ", name.Line);
 
-      var line = name.Line.toLowerCase();
-      var splitwords = line.split(/\W+/);
-      for (var i = 0; i<splitwords.length; i++ )
-      {
-        if (splitwords[i].length > 1 && splitwords[i] != "don")
-        {
-          var wordNotFound = true;
-          for (var j = 0; j< wordArray.length; j++)
-          {
-            if (wordArray[j].word === splitwords[i])
-            {
-              wordArray[j].count++;
-              wordNotFound = false;
-              break;
-            }
-
-          }
-          if(wordNotFound)
-          {
-            var tempwordObject = {}
-            tempwordObject.word = splitwords[i]
-            tempwordObject.count = 1;
-            wordArray.push(tempwordObject);
-          }
-        }
-      }
-    }
-  }
-})
-
-  wordArray.sort(function(x, y){
-     return d3.descending(x.count, y.count);
-  })
-	console.log("wordArray.slice(0, 100) = ", wordArray.slice(0, 100))
-
-  //Load the sorted data
-  let theGraph = {}
-  theGraph.nodes = [];
-  theGraph.links = [];
-
-  for(var i = 0; i<6; i++)
-  {
-    let theNodes = {};
-    if(i==0)
-    theNodes.name = "Cartman";
-    else {
-    theNodes.name = wordArray[i-1].word;
-    let theLinks = {};
-    theLinks.source = 0;
-    theLinks.target = i;
-    theLinks.value = 1;
-    theGraph.links.push(theLinks)
-    }
-    theNodes.node = i;
-
-    theGraph.nodes.push(theNodes)
-
-  }
 
   /************
-  
   LÄGG TILL EN LINEARSCALE MELLAN TYP 1-5 FÖR
   theLinks.value BASERAT PÅ ANTALET GÅNGER ORDET SKRIVITS
-
+  var scaleValue = d3.scaleLinear()
+  .domain([wordArray[3],wordArray[0] ])
+  .range([1, 4])
   ************/
 
-  console.log("theGraph = ", theGraph);
+  //console.log("theGraph = ", theGraph);
 
   // load the data
-  //d3.json("data/sankey.json", function(graph) {
-    var graph = theGraph;
+
+  //Skapa funktion som läser in String och sätter in i denna funktion ist för "Cartman"
+    var graph = createSankeyGraph(data, "Cartman", "Stan");
+
     console.log("graph = ", graph)
     sankey.nodes(graph.nodes)
         .links(graph.links)
@@ -189,6 +126,140 @@ function showsankey(data){
       sankey.relayout();
       link.attr("d", path);
     }
-  //});
 
+}
+
+function createSankeyGraph (data, stringName1, stringName2)
+{
+  //SORT THE DATA
+  var wordArray1 = []
+  var wordArray2 = []
+  var wordArray3 = []
+  var wordArray4 = []
+
+  var newdata = data.slice(0,100);
+  newdata.forEach(function (object) {
+  for (let prop in object){
+    //console.log("object[prop] = ", object[prop])
+    if (object[prop] === stringName1) {
+      //console.log("name[prop] = ", name.Line);
+      createWordArray(data, object, wordArray1)
+    }
+    else if(object[prop] === stringName2)
+    {
+      createWordArray(data, object, wordArray2)
+    }
+  }
+})
+
+wordArray1.sort(function(x, y){
+   return d3.descending(x.count, y.count);
+})
+wordArray2.sort(function(x, y){
+   return d3.descending(x.count, y.count);
+})
+/*
+wordArray3.sort(function(x, y){
+   return d3.descending(x.count, y.count);
+})
+wordArray4.sort(function(x, y){
+   return d3.descending(x.count, y.count);
+})*/
+console.log("wordArray2.slice(0, 100) = ", wordArray2.slice(0, 100))
+
+
+
+
+  //Make the sorted data graph for the Sankey algorithm
+  let theGraph = {}
+  theGraph.nodes = [];
+  theGraph.links = [];
+  var NUM_OF_CHARACTERS = 2;
+
+  let stringnames = []
+  stringnames.push(stringName1)
+  stringnames.push(stringName2)
+  console.log("stringnames = ",stringnames)
+
+  let wordArrays = []
+  wordArrays.push(wordArray1)
+  wordArrays.push(wordArray2)
+  console.log("wordArrays = ",wordArrays)
+
+  for(var i= 0; i<NUM_OF_CHARACTERS; i++)
+  {
+      initiateGraph(theGraph, stringnames[i], i, wordArrays[i]);
+  }
+  //initiateGraph(theGraph, stringName1, 0, wordArray1);
+  console.log("6%6 = ", 1%6)
+  return theGraph;
+
+} // End of function createSankeyGraph
+
+function createWordArray (data, object, wordArray)
+{
+  var line = object.Line.toLowerCase();
+  var splitwords = line.split(/\W+/);
+  for (var i = 0; i<splitwords.length; i++ )
+  {
+    if (splitwords[i].length > 1 && splitwords[i] != "don")
+    {
+      var wordNotFound = true;
+      for (var j = 0; j< wordArray.length; j++)
+      {
+        if (wordArray[j].word === splitwords[i])
+        {
+          wordArray[j].count++;
+          wordNotFound = false;
+          break;
+        }
+      }
+      if(wordNotFound)
+      {
+        var tempwordObject = {}
+        tempwordObject.word = splitwords[i]
+        tempwordObject.count = 1;
+        wordArray.push(tempwordObject);
+      }
+    } //End of if (splitwords[i].length > 1 && splitwords[i] != "don")
+  } //End of for (var i = 0; i<splitwords.length; i++ )
+} //End of function createSortedWordArray
+
+function initiateGraph (theGraph, stringName, source, wordArray)
+{
+  var newCharacter = source*6
+  var endOfLoop = newCharacter + 6
+  for(var i = newCharacter ; i < endOfLoop; i++)
+  {
+    let theNodes = {};
+    if(i%6==0) //i%6 is used so that every 6th theNodes.name is equal to the characther name stored in "stringName",
+    //and the other 5 should be the most used words used in wordArray
+      theNodes.name = stringName;
+    else
+      theNodes.name = wordArray[i%6-1].word;
+
+    theNodes.node = i;
+    theGraph.nodes.push(theNodes)
+  }
+  for(var i = newCharacter + 1; i<endOfLoop; i++)
+  {
+    let theLinks = {};
+    theLinks.source = newCharacter;
+    theLinks.target = i;
+    theLinks.value = 1;
+
+    for(var j=0; j < endOfLoop; j++)
+    {
+      if(theGraph.nodes[i].name == theGraph.nodes[j].name) //Check if the word is already in a previous characters array
+        {
+          theLinks.target = j;
+          //TESTA MED NY CSS theGraph.nodes[i] = theGraph.nodes[j]
+          break;
+        }
+    }
+    theGraph.links.push(theLinks)
+
+
+  }
+  console.log("theGraph = ", theGraph)
 }
