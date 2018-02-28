@@ -1,55 +1,99 @@
 function showsankey(data){
 
-    this.data = data
+this.data = data
 
-    var units = "Widgets";
+ var strChar1 = "Cartman"
+ var strChar2 = "Cartman"
 
-  // set the dimensions and margins of the graph
-  var margin = {top: 10, right: 10, bottom: 10, left: 10},
-      width = 700 - margin.left - margin.right,
-      height = 300 - margin.top - margin.bottom;
+  //Function that reads in String och sets the names to user input rather than default "Cartman"
+  this.setFrstName = function()
+  {
+    var slct1 = document.getElementById("selections1");
+    strChar1 = slct1.options[slct1.selectedIndex].text;
+    slct1.disabled = true;
+    document.getElementById("frstinput").disabled = true;
 
-  // format variables
-  var formatNumber = d3.format(",.0f"),    // zero decimal places
-      format = function(d) { return formatNumber(d) + " " + units; },
-      color = d3.scaleOrdinal(d3.schemeCategory20);
+    document.getElementById("scndinput").disabled = false;
+    slct2 = document.getElementById("selections2");
+    slct2.disabled = false;
+    slct2.options[slct1.selectedIndex].disabled = true;
+    if (slct2.selectedIndex == slct1.selectedIndex)
+    slct2.selectedIndex = slct1.selectedIndex%4 +1;
+  }
 
-  // append the svg object to the body of the page
-  var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+  this.setScndName = function()
+  {
+    var slct2 = document.getElementById("selections2");
+    strChar2 = slct2.options[slct2.selectedIndex].text;
 
-  // Set the sankey diagram properties
-  var sankey = d3.sankey()
-      .nodeWidth(36)
-      .nodePadding(40)
-      .size([width, height]);
+    slct2.disabled = true;
+    document.getElementById("scndinput").disabled = true;
+    document.getElementById("drawButton").disabled= false;
+  }
 
-  var path = sankey.link();
+this.reset = function ()
+{
+  //Clear previous draw
+  var div = document.getElementById("root3")
+  div.innerHTML = ""
+
+  var options = document.querySelectorAll('#selections1 option');
+  for (var i = 0, l = options.length; i < l; i++) {
+    options[i].disabled = false;
+    options[i].selected = options[i].defaultSelected;
+  }
+  var options = document.querySelectorAll('#selections2 option');
+  for (var i = 0, l = options.length; i < l; i++) {
+    options[i].disabled = false;
+    options[i].selected = options[i].defaultSelected;
+}
+  document.getElementById("drawButton").disabled= true;
+  document.getElementById("selections1").disabled= false;
+  document.getElementById("selections2").disabled= true;
+  document.getElementById("frstinput").disabled = false;
+  document.getElementById("scndinput").disabled = true;
+}
+
+this.draw = function ()
+{
+  document.getElementById("drawButton").disabled= true;
+
+  var graph = createSankeyGraph(data, strChar1, strChar2);
 
 
+  /******************Did not write whats below*************************/
+  /******************Did not write whats below*************************/
+  //SOURCE https://bl.ocks.org/d3noob/013054e8d7807dff76247b81b0e29030
 
+  var units = "Widgets";
 
+  var div = `#root3`;
 
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 10, bottom: 10, left: 10},
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
+// format variables
+var formatNumber = d3.format(",.0f"),    // zero decimal places
+    format = function(d) { return formatNumber(d) + " " + units; },
+    color = d3.scaleOrdinal(d3.schemeCategory20);
 
-  /************
-  LÄGG TILL EN LINEARSCALE MELLAN TYP 1-5 FÖR
-  theLinks.value BASERAT PÅ ANTALET GÅNGER ORDET SKRIVITS
-  var scaleValue = d3.scaleLinear()
-  .domain([wordArray[3],wordArray[0] ])
-  .range([1, 4])
-  ************/
+// append the svg object to the body of the page
+var svg = d3.select(div).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
 
-  //console.log("theGraph = ", theGraph);
+// Set the sankey diagram properties
+var sankey = d3.sankey()
+    .nodeWidth(36)
+    .nodePadding(40)
+    .size([width, height]);
 
-  // load the data
-
-  //Skapa funktion som läser in String och sätter in i denna funktion ist för "Cartman"
-    var graph = createSankeyGraph(data, "Cartman", "Stan");
+var path = sankey.link();
 
     console.log("graph = ", graph)
     sankey.nodes(graph.nodes)
@@ -109,7 +153,10 @@ function showsankey(data){
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
         .attr("transform", null)
-        .text(function(d) { return d.name; })
+        .text(function(d) {
+          if(d.value>0)
+          return d.name;
+        })
       .filter(function(d) { return d.x < width / 2; })
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
@@ -127,15 +174,32 @@ function showsankey(data){
       link.attr("d", path);
     }
 
-}
 
+ }
+};
+/******************Did not write whats above*************************/
+/******************Did not write whats above*************************/
+//SOURCE https://bl.ocks.org/d3noob/013054e8d7807dff76247b81b0e29030
+
+
+/*******************************************************
+// Everything written below this line is self written  //
+********************************************************/
 function createSankeyGraph (data, stringName1, stringName2)
 {
-  //SORT THE DATA
+  //Initialize some values
+  var NUM_OF_CHARACTERS = 2;
+  if(stringName1 == stringName2)//The code is written in a way that this shouldnt be possible, but just in case...
+  NUM_OF_CHARACTERS = 1;
+
+
+  let stringnames = []
+  stringnames.push(stringName1)
+  stringnames.push(stringName2)
+
   var wordArray1 = []
   var wordArray2 = []
-  var wordArray3 = []
-  var wordArray4 = []
+  //var wordArray3 = []
 
   var newdata = data.slice(0,100);
   newdata.forEach(function (object) {
@@ -143,15 +207,16 @@ function createSankeyGraph (data, stringName1, stringName2)
     //console.log("object[prop] = ", object[prop])
     if (object[prop] === stringName1) {
       //console.log("name[prop] = ", name.Line);
-      createWordArray(data, object, wordArray1)
+      createWordArray(object, wordArray1)
     }
     else if(object[prop] === stringName2)
     {
-      createWordArray(data, object, wordArray2)
+      createWordArray(object, wordArray2)
     }
   }
 })
 
+//SORT THE DATA
 wordArray1.sort(function(x, y){
    return d3.descending(x.count, y.count);
 })
@@ -161,48 +226,36 @@ wordArray2.sort(function(x, y){
 /*
 wordArray3.sort(function(x, y){
    return d3.descending(x.count, y.count);
-})
-wordArray4.sort(function(x, y){
-   return d3.descending(x.count, y.count);
 })*/
-console.log("wordArray2.slice(0, 100) = ", wordArray2.slice(0, 100))
 
-
-
+  let wordArrays = []
+  wordArrays.push(wordArray1)
+  wordArrays.push(wordArray2)
 
   //Make the sorted data graph for the Sankey algorithm
   let theGraph = {}
   theGraph.nodes = [];
   theGraph.links = [];
-  var NUM_OF_CHARACTERS = 2;
-
-  let stringnames = []
-  stringnames.push(stringName1)
-  stringnames.push(stringName2)
-  console.log("stringnames = ",stringnames)
-
-  let wordArrays = []
-  wordArrays.push(wordArray1)
-  wordArrays.push(wordArray2)
-  console.log("wordArrays = ",wordArrays)
 
   for(var i= 0; i<NUM_OF_CHARACTERS; i++)
   {
       initiateGraph(theGraph, stringnames[i], i, wordArrays[i]);
   }
-  //initiateGraph(theGraph, stringName1, 0, wordArray1);
-  console.log("6%6 = ", 1%6)
+
   return theGraph;
 
 } // End of function createSankeyGraph
 
-function createWordArray (data, object, wordArray)
+//This function takes as input a specific object from the data, and an array with words.
+//It then reads the line in the current object and splits up the words and ignores <!, ?, ', ",> and other signs.
+//After that it searches through the input array to find if the word in the line has already been said and increments its count.
+function createWordArray (object, wordArray)
 {
   var line = object.Line.toLowerCase();
   var splitwords = line.split(/\W+/);
   for (var i = 0; i<splitwords.length; i++ )
   {
-    if (splitwords[i].length > 1 && splitwords[i] != "don")
+    if (splitwords[i].length > 1 && splitwords[i] != "don") // Only count words longer than 1 letter, and ignore a few broken up words like how "don't" becomes "don & t".
     {
       var wordNotFound = true;
       for (var j = 0; j< wordArray.length; j++)
@@ -214,7 +267,7 @@ function createWordArray (data, object, wordArray)
           break;
         }
       }
-      if(wordNotFound)
+      if(wordNotFound) //If the word doesn't already exists in the input array it adds it and sets the count to 1.
       {
         var tempwordObject = {}
         tempwordObject.word = splitwords[i]
@@ -248,18 +301,22 @@ function initiateGraph (theGraph, stringName, source, wordArray)
     theLinks.target = i;
     theLinks.value = 1;
 
+      /************
+      LÄGG TILL EN LINEARSCALE MELLAN TYP 1-5 FÖR
+      theLinks.value BASERAT PÅ ANTALET GÅNGER ORDET SKRIVITS
+      var scaleValue = d3.scaleLinear()
+      .domain([wordArray[3],wordArray[0] ])
+      .range([1, 4])
+      ************/
+
     for(var j=0; j < endOfLoop; j++)
     {
       if(theGraph.nodes[i].name == theGraph.nodes[j].name) //Check if the word is already in a previous characters array
         {
           theLinks.target = j;
-          //TESTA MED NY CSS theGraph.nodes[i] = theGraph.nodes[j]
           break;
         }
     }
     theGraph.links.push(theLinks)
-
-
   }
-  console.log("theGraph = ", theGraph)
 }

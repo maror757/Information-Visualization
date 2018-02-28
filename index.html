@@ -8,6 +8,39 @@
 <body>
   <div id="root">
   </div>
+  <div id="root1">
+
+    <div  title="dropdownbar1">
+      <select id="selections1">
+        <option value="Cartman">Cartman</option>
+        <option value="Stan">Stan</option>
+        <option value="Kyle">Kyle</option>
+        <option value="Butters">Butters</option>
+      </select>
+      <input id="frstinput" type="submit" value="Choose first character and then press here" onclick="showsankey.setFrstName()"/>
+    </div>
+
+  </div>
+
+  <div id="root2">
+
+    <div  title="dropdownbar2">
+      <select id="selections2" disabled>
+        <option value="Cartman">Cartman</option>
+        <option value="Stan">Stan</option>
+        <option value="Kyle">Kyle</option>
+        <option value="Butters">Butters</option>
+      </select>
+      <input id="scndinput" type="submit" value="Choose second character and then press here" onclick="showsankey.setScndName()" disabled />
+    </div>
+
+  </div>
+
+  <input id="drawButton" type="button" value="DRAW" onclick="showsankey.draw()" disabled />
+  <input type="button" value="RESET" onclick="showsankey.reset()" />
+
+  <div id="root3">
+  </div>
 
   <script src="./lib/jquery.min.js"></script>
   <script src="./lib/d3.min.js"></script>
