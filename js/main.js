@@ -8,5 +8,5 @@ function draw(error, data){
   if (error) throw error
 
   bubbles = new bubbles(data)
-  //showsankey = new showsankey(data)
+  showsankey = new showsankey(data)
 }
