@@ -1,20 +1,59 @@
 function bubbles(data){
 
-    // Calculate character_count with d3.nest
-    this.data = data
+   var sliced_data = data//.slice(0, 30)
 
-    var character_count;
+   var new_data = []
 
-    var character_count = d3.nest()
-        .key(function(d) { return d.Character; })
-        .rollup(function(g) { return g.length })
-        .entries(data)
+   var nested_data = d3.nest()
+       .key(function(d) { return d.Character })
+       .entries(sliced_data)
 
-   character_count.sort(function(x, y){
+   for (var i = 0; i < nested_data.length; i++) {
+     var lines = ''
+
+     nested_data[i].values.forEach(function(d) {
+       lines += d.Line + ' '
+     })
+
+     lines = lines.toUpperCase();
+     var splitwords = lines.split(/\W+/);
+
+     var count = d3.nest()
+         .key(function(d) { return d })
+         .rollup(function(d) { return d.length })
+         .entries(splitwords)
+
+     vocabulary = []
+
+     for (var j = 0; j < count.length; j++) {
+       vocabulary.push({word: count[j].key, count: count[j].value})
+     }
+
+     new_data.push({name: nested_data[i].key, vocabulary: vocabulary})
+   }
+
+   var all_words_data = []
+
+   for (var i = 0; i < new_data.length; i++) {
+     for (var j = 0; j < new_data[i].vocabulary.length; j++) {
+       all_words_data.push(new_data[i].vocabulary[j])
+     }
+   }
+
+   all_words_data = d3.nest()
+       .key(function(d) { return d.word })
+       .rollup(function(d) { return d.length })
+       .entries(all_words_data)
+
+   all_words_data.sort(function(x, y){
       return d3.descending(x.value, y.value);
    })
 
-   character_count = character_count.slice(0, 80)
+   all_words_data = all_words_data.slice(0, 100)
+
+   console.log(all_words_data)
+
+   //console.log(all_words_data)
 
    //for (var prop in character_count) {
    //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
@@ -31,11 +70,13 @@ function bubbles(data){
    var format = d3.format(`,d`);
    var color = d3.scaleOrdinal(d3.schemeCategory20)
 
+   /*
    // Not used anywhere yet
    var scaleText = d3.scaleLinear()
        .domain([d3.min(character_count.map(function(d) { return d.value })),
                 d3.max(character_count.map(function(d) { return d.value }))])
        .range([10, 35])
+    */
 
     var pack = d3.pack()
         .size([width, height])
@@ -53,8 +94,10 @@ function bubbles(data){
         .style("font", "1em sans-serif")
         .text("tooltip");
 
-    var root = d3.hierarchy({children: character_count})
+    var root = d3.hierarchy({children: all_words_data})
         .sum(function(d) { return d.value })
+
+        //console.log(root)
 
     var svg = d3.select(div).append(`svg`)
         .attr(`width`, width)
@@ -83,8 +126,8 @@ function bubbles(data){
         .attr(`stroke`, `grey`);
 
     node.append(`text`)
-        .attr(`dy`, `.3em`)
-        .attr(`font-size`, function(d) { return d.r/d.data.key.length*2.5 })
+        .attr(`dy`, `.4em`)
+        .attr(`font-size`, function(d) { return d.r/d.data.key.length*1.5 })
         .style(`text-anchor`, `middle`)
         .text(function(d) { return d.data.key })
 
