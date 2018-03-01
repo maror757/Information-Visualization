@@ -15,5 +15,5 @@ function draw(error, data){
   topbar = new topbar()
   bubbles = new bubbles(edited_data, 100)
   showsankey = new showsankey(data)
-  showsankey.draw()
+  //showsankey.draw()
 }

@@ -5,67 +5,23 @@ var testdata = data.slice(0,1000);
 data = testdata;
 
 //MAKE THIS USER INPUT
- var strChar1 = "Cartman"
- var strChar2 = "Butters"
- var strChar3 = "Kyle"
-
-  //Function that reads in String och sets the names to user input rather than default "Cartman"
-  this.setFrstName = function()
-  {
-    var slct1 = document.getElementById("selections1");
-    strChar1 = slct1.options[slct1.selectedIndex].text;
-    slct1.disabled = true;
-    document.getElementById("frstinput").disabled = true;
-
-    document.getElementById("scndinput").disabled = false;
-    slct2 = document.getElementById("selections2");
-    slct2.disabled = false;
-    slct2.options[slct1.selectedIndex].disabled = true;
-    if (slct2.selectedIndex == slct1.selectedIndex)
-    slct2.selectedIndex = slct1.selectedIndex%4 +1;
-  }
-
-  this.setScndName = function()
-  {
-    var slct2 = document.getElementById("selections2");
-    strChar2 = slct2.options[slct2.selectedIndex].text;
-
-    slct2.disabled = true;
-    document.getElementById("scndinput").disabled = true;
-    document.getElementById("drawButton").disabled= false;
-  }
-
-this.reset = function ()
-{
-  //Clear previous draw
-  var div = document.getElementById("root3")
-  div.innerHTML = ""
-
-  var options = document.querySelectorAll('#selections1 option');
-  for (var i = 0, l = options.length; i < l; i++) {
-    options[i].disabled = false;
-    options[i].selected = options[i].defaultSelected;
-  }
-  var options = document.querySelectorAll('#selections2 option');
-  for (var i = 0, l = options.length; i < l; i++) {
-    options[i].disabled = false;
-    options[i].selected = options[i].defaultSelected;
-}
-  document.getElementById("drawButton").disabled= true;
-  document.getElementById("selections1").disabled= false;
-  document.getElementById("selections2").disabled= true;
-  document.getElementById("frstinput").disabled = false;
-  document.getElementById("scndinput").disabled = true;
-}
+//var charArray = []
 
 this.draw = function ()
 {
-  document.getElementById("drawButton").disabled= true;
+  var div = document.getElementById("root3")
+  div.innerHTML = ""
 
   var charArray = []
-  charArray.push(strChar1)
-  charArray.push(strChar2)
-  charArray.push(strChar3)
+  var selections = document.querySelectorAll('#selections input')
+  for (var i = 0, l = selections.length; i < l; i++)
+  {
+    if(selections[i].checked)
+    {
+      charArray.push(selections[i].value)
+    }
+  }
+
   var graph = createSankeyGraph(data, charArray);
 
   /******************Did not write whats below*************************/
@@ -78,9 +34,9 @@ this.draw = function ()
   var div = `#root3`;
 
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 1100 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+var margin = {top: 10, right: 50, bottom: 10, left: 30},
+    width = $(div).parent().width() - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
 
 // format variables
 var formatNumber = d3.format(",.0f"),    // zero decimal places
@@ -99,12 +55,11 @@ var svg = d3.select(div).append("svg")
 // Set the sankey diagram properties
 var sankey = d3.sankey()
     .nodeWidth(36)
-    .nodePadding(40)
+    .nodePadding(10)
     .size([width, height]);
 
 var path = sankey.link();
 
-    console.log("graph = ", graph)
     sankey.nodes(graph.nodes)
         .links(graph.links)
         .layout(32);
@@ -215,7 +170,6 @@ function createSankeyGraph (data, charArray)
   var NUM_OF_WORDS = 6+1;
   //if(stringName1 == stringName2)//The code is written in a way that this shouldnt be possible, but just in case...
   //NUM_OF_CHARACTERS = 1;
-  console.log("NUM_OF_CHARACTERS = ", NUM_OF_CHARACTERS)
 
   /*let stringnames = []
   stringnames.push(stringName1)
@@ -229,7 +183,6 @@ function createSankeyGraph (data, charArray)
   {
     wordArrays.push([])
   }
-  console.log("wordArrays = ", wordArrays)
   //var wordArray1 = []
   //var wordArray2 = []
   //var wordArray3 = []
@@ -283,7 +236,7 @@ wordArray3.sort(function(x, y){
 //After that it searches through the input array to find if the word in the line has already been said and increments its count.
 function createWordArray (object, wordArray)
 {
-  var line = object.Line.toLowerCase();
+  var line = object.Line.toUpperCase();
   var splitwords = line.split(/\W+/);
   for (var i = 0; i<splitwords.length; i++ )
   {
