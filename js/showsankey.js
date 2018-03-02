@@ -152,6 +152,7 @@ var path = sankey.link();
 };
 /******************Did not write whats above*************************/
 /******************Did not write whats above*************************/
+//Except for minor tweaks here and there, for colors and such//
 //SOURCE https://bl.ocks.org/d3noob/013054e8d7807dff76247b81b0e29030
 
 

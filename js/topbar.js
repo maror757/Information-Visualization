@@ -1,24 +1,15 @@
 function topbar(data){
 
-   //for (var prop in character_count) {
-   //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
-   //}
-
-   //console.log(character_count)
-
-   data=data.slice(0,20)
    // Add SVGs to DOM
-   var div = `#topbar`;
+   var div = `#topbartitle`;
 
    var height = 50
    var width = $(div).parent().width()
 
+
    var topbar = d3.select(div).append(`div`)
        .attr(`width`, width)
        .attr(`height`, height)
-
-   topbar.append(`p`)
-       .text(`Choose character to display`)
 
 	//Read in the 20 characters that speak the most//
     var charArray = []
@@ -60,5 +51,6 @@ function topbar(data){
         showsankey.draw()
         bubbles.draw()
        }
-      root.appendChild(charinput)
+      var submitDiv = document.getElementById('submitButton');
+      submitDiv.appendChild(charinput)
 }
