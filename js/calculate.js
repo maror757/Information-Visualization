@@ -1,7 +1,7 @@
 function calculate(data, banned){
 
   var edited_data = []
-
+data = data.slice(0,100)
   var nested_data = d3.nest()
       .key(function(d) { return d.Character })
       .entries(data)

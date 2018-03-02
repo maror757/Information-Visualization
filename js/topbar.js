@@ -1,4 +1,4 @@
-function topbar(){
+function topbar(data){
 
    //for (var prop in character_count) {
    //  console.log(character_count[prop].value + ' ' + character_count[prop].key)
@@ -6,6 +6,7 @@ function topbar(){
 
    //console.log(character_count)
 
+   data=data.slice(0,20)
    // Add SVGs to DOM
    var div = `#topbar`;
 
@@ -18,26 +19,19 @@ function topbar(){
        .attr(`height`, height)
 
    topbar.append(`p`)
-       .text(`Här är knappar`)
+       .text(`Choose character to display`)
 
-	//LÄS IN DE 10 SOM SÄGER MEST//
-   var strChar1 = "Cartman"
-   var strChar2 = "Kyle"
-   var strChar3 = "Stan"
-   var strChar4 = "Butters"
-   var strChar5 = "Chef"
-   var strChar6 = "Kenny"
-   var strChar7 = "Mayor McDaniels"
-   var strChar8 = "Jimbo"
-   var charArray = []
-   charArray.push(strChar1)
-   charArray.push(strChar2)
-   charArray.push(strChar3)
-   charArray.push(strChar4)
-   charArray.push(strChar5)
-   charArray.push(strChar6)
-   charArray.push(strChar7)
-   charArray.push(strChar8)
+	//Read in the 20 characters that speak the most//
+    var charArray = []
+   data.forEach(function (object) {
+     for(let prop in object){
+       if(prop === "name")
+       {
+         charArray.push(object[prop])
+       }
+     }
+   })
+   console.log("charArray = ", charArray)
 
     var root = document.getElementById('topbar');
 

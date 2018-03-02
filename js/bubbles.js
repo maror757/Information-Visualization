@@ -40,9 +40,10 @@ this.draw = function (){
     
     // Add SVGs to DOM
     var div = `#bubbles`;
+    var divTop = `#topbar`;
 
     var height = 600
-    var width = $(div).parent().width()
+    var width = $(div).parent().width() - $(divTop).width()*2
 
     var format = d3.format(`,d`);
     var color = d3.scaleOrdinal(d3.schemeCategory20)

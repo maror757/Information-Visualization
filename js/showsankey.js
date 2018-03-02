@@ -1,11 +1,6 @@
 function showsankey(data){
 
 this.data = data
-var testdata = data.slice(0,1000);
-data = testdata;
-
-//MAKE THIS USER INPUT
-//var charArray = []
 
 this.draw = function ()
 {
@@ -168,55 +163,20 @@ function createSankeyGraph (data, charArray)
   //Initialize some values
   var NUM_OF_CHARACTERS = charArray.length;
   var NUM_OF_WORDS = 6+1;
-  //if(stringName1 == stringName2)//The code is written in a way that this shouldnt be possible, but just in case...
-  //NUM_OF_CHARACTERS = 1;
-
-  /*let stringnames = []
-  stringnames.push(stringName1)
-  stringnames.push(stringName2)
-  stringnames.push(stringName1)
-  stringnames.push(stringName2)
-*/
 
   let wordArrays = []
-  for (var i =0; i<NUM_OF_CHARACTERS; i++)
-  {
-    wordArrays.push([])
-  }
-  //var wordArray1 = []
-  //var wordArray2 = []
-  //var wordArray3 = []
-
+for (var i=0; i<NUM_OF_CHARACTERS; i++)
+{
   data.forEach(function (object) {
-  for (let prop in object){
-    //console.log("object[prop] = ", object[prop])
-    for(var i =0; i<NUM_OF_CHARACTERS; i++)
-    {
-      if (object[prop] === charArray[i]) {
-        //console.log("name[prop] = ", name.Line);
-        createWordArray(object, wordArrays[i])
+    for(let prop in object){
+      if(object[prop] === charArray[i])
+      {
+        wordArrays.push(object.vocabulary)
       }
     }
-  }
-})
-
-//SORT THE DATA
-for(var i =0; i<NUM_OF_CHARACTERS; i++)
-{
-  wordArrays[i].sort(function(x, y){
-     return d3.descending(x.count, y.count);
-     })
+  })
 }
-/*
-wordArray3.sort(function(x, y){
-   return d3.descending(x.count, y.count);
-})*/
 
-  /*let wordArrays = []
-  wordArrays.push(wordArray1)
-  wordArrays.push(wordArray2)
-  wordArrays.push(wordArray1)
-  wordArrays.push(wordArray2)*/
   //Make the sorted data graph for the Sankey algorithm
   let theGraph = {}
   theGraph.nodes = [];
@@ -231,37 +191,6 @@ wordArray3.sort(function(x, y){
 
 } // End of function createSankeyGraph
 
-//This function takes as input a specific object from the data, and an array with words.
-//It then reads the line in the current object and splits up the words and ignores <!, ?, ', ",> and other signs.
-//After that it searches through the input array to find if the word in the line has already been said and increments its count.
-function createWordArray (object, wordArray)
-{
-  var line = object.Line.toUpperCase();
-  var splitwords = line.split(/\W+/);
-  for (var i = 0; i<splitwords.length; i++ )
-  {
-    if (splitwords[i].length > 1 && splitwords[i] != "don") // Only count words longer than 1 letter, and ignore a few broken up words like how "don't" becomes "don & t".
-    {
-      var wordNotFound = true;
-      for (var j = 0; j< wordArray.length; j++)
-      {
-        if (wordArray[j].word === splitwords[i])
-        {
-          wordArray[j].count++;
-          wordNotFound = false;
-          break;
-        }
-      }
-      if(wordNotFound) //If the word doesn't already exists in the input array it adds it and sets the count to 1.
-      {
-        var tempwordObject = {}
-        tempwordObject.word = splitwords[i]
-        tempwordObject.count = 1;
-        wordArray.push(tempwordObject);
-      }
-    } //End of if (splitwords[i].length > 1 && splitwords[i] != "don")
-  } //End of for (var i = 0; i<splitwords.length; i++ )
-} //End of function createSortedWordArray
 
 function initiateGraph (theGraph, stringName, source, wordArray, numOfWords)
 {

@@ -12,8 +12,7 @@ function draw(error, data){
 
   edited_data = calculate(data, banned)
 
-  topbar = new topbar()
+  topbar = new topbar(edited_data)
   bubbles = new bubbles(edited_data)
-  showsankey = new showsankey(data)
-  //showsankey.draw()
+  showsankey = new showsankey(edited_data)
 }
