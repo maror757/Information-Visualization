@@ -5,17 +5,31 @@ this.draw = function (){
 
   document.getElementById("bubbles").innerHTML = ""
 
+  var charArray = []
+  var selections = document.querySelectorAll('#selections input')
+  for (var i = 0; i < selections.length; i++)
+  {
+    if(selections[i].checked)
+    {
+      charArray.push(selections[i].value)
+    }
+  }
+
     var all_words_data = []
 
     for (var i = 0; i < data.length; i++) {
       for (var j = 0; j < data[i].vocabulary.length; j++) {
-        all_words_data.push(data[i].vocabulary[j])
+        for (var k = 0; k < charArray.length; k++) {
+          if (charArray[k] === data[i].name) {
+            all_words_data.push(data[i].vocabulary[j])
+          }
+        }
       }
     }
 
     all_words_data = d3.nest()
     .key(function(d) { return d.word })
-    .rollup(function(d) { return d.length })
+    .rollup(function(d) { return d[0].count })
     .entries(all_words_data)
 
     all_words_data.sort(function(x, y){
@@ -26,9 +40,10 @@ this.draw = function (){
 
     // Add SVGs to DOM
     var div = `#bubbles`;
+    var divTop = `#topbar`;
 
     var height = 600
-    var width = $(div).parent().width()
+    var width = $(div).parent().width() - $(divTop).width()*2
 
     var format = d3.format(`,d`);
     var color = d3.scaleOrdinal(d3.schemeCategory20)

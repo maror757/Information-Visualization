@@ -21,7 +21,7 @@ function topbar(data){
    topbar.append(`p`)
        .text(`Choose character to display`)
 
-	//Read in the 20 characters that speaks the most//
+	//Read in the 20 characters that speak the most//
     var charArray = []
    data.forEach(function (object) {
      for(let prop in object){
