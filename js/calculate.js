@@ -1,7 +1,8 @@
 function calculate(data, banned){
 
+  data = data//.slice(0,100)
+
   var edited_data = []
-data = data.slice(0,100)
   var nested_data = d3.nest()
       .key(function(d) { return d.Character })
       .entries(data)
@@ -42,6 +43,19 @@ data = data.slice(0,100)
     edited_data.push({name: nested_data[i].key, vocabulary: vocabulary})
   }
 
+  edited_data.sort(function (a,b) {
+    var a_temp = 0
+    var b_temp = 0
+
+    a.vocabulary.forEach(function(e) {
+      a_temp += e.count
+    })
+    b.vocabulary.forEach(function(e) {
+      b_temp += e.count
+    })
+
+    return b_temp - a_temp
+  })
 
   return edited_data
 }

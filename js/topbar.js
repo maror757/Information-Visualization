@@ -13,7 +13,6 @@ function topbar(data){
    var height = 50
    var width = $(div).parent().width()
 
-
    var topbar = d3.select(div).append(`div`)
        .attr(`width`, width)
        .attr(`height`, height)

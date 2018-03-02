@@ -3,6 +3,9 @@
   padding: 0px;
 }
 
+body {
+  background-color:  #fff2e8
+}
 
 .top-left {
   float: left;
@@ -14,9 +17,6 @@
   float: right;
   margin-left: 100px;
 }
-
-
-
 
 .node rect {
   cursor: move;
@@ -67,7 +67,7 @@
   left: 0;
   height: 15px;
   width: 15px;
-  background-color: #eee;
+  background-color: #fff;
 }
 
 /* On mouse-over, add a grey background color */
