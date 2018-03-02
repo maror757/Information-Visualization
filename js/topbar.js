@@ -18,7 +18,7 @@ function topbar(){
        .attr(`height`, height)
 
    topbar.append(`p`)
-       .text(`Här är knappar`)
+       .text(`Choose character to display`)
 
 	//LÄS IN DE 10 SOM SÄGER MEST//
    var strChar1 = "Cartman"
