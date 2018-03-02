@@ -35,8 +35,13 @@ function calculate(data, banned){
       vocabulary.push({word: count[j].key, count: count[j].value})
     }
 
+    vocabulary.sort(function(x,y) {
+      return d3.descending(x.count, y.count)
+    })
+
     edited_data.push({name: nested_data[i].key, vocabulary: vocabulary})
   }
+
 
   return edited_data
 }

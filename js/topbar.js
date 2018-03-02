@@ -7,7 +7,7 @@ function topbar(){
    //console.log(character_count)
 
    // Add SVGs to DOM
-   var div = `#root`;
+   var div = `#topbar`;
 
    var height = 50
    var width = $(div).parent().width()
@@ -19,7 +19,7 @@ function topbar(){
 
    topbar.append(`p`)
        .text(`Här är knappar`)
-	   
+
 	//LÄS IN DE 10 SOM SÄGER MEST//
    var strChar1 = "Cartman"
    var strChar2 = "Kyle"
@@ -39,7 +39,7 @@ function topbar(){
    charArray.push(strChar7)
    charArray.push(strChar8)
 
-    var root = document.getElementById('root');
+    var root = document.getElementById('topbar');
 
       for (var j =0; j<charArray.length; j++)
       {
@@ -63,6 +63,9 @@ function topbar(){
       var charinput = document.createElement('input')
       charinput.type="submit"
       charinput.value="Submit"
-      charinput.onclick = function() { showsankey.draw(); }
+      charinput.onclick = function() {
+        showsankey.draw()
+        bubbles.draw()
+       }
       root.appendChild(charinput)
 }
