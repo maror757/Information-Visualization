@@ -30,19 +30,31 @@ position: static;
   margin-top: 5px;
   overflow-y:auto;
   overflow-x: hidden;
-  max-height: 500px;
+  max-height: 604.5px;
   max-width: 200px;
 }
 
 .bub-right {
   float: right;
+  margin-top: 5px;
   margin-left: 100px;
 }
 
+
+.root3-title-top {
+
+  float: left;
+  font-family: Verdana;
+  position: static;
+  margin-top: 80px;
+  margin-left: 20px;
+  max-width: 1000px;
+}
 .sank-bot {
   float: right;
   position: relative;
-  margin-top: 20px;
+  margin-top: 0px;
+  margin-left: 20px;
 }
 
 .node rect {
