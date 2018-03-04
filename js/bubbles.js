@@ -3,41 +3,25 @@ function bubbles(data){
   // Edit data
 this.draw = function (){
 
-  var asd = document.getElementById("bubbles");
-  asd.innerHTML = ""
+  document.getElementById("bubbles").innerHTML = ""
 
   var charArray = []
   var selections = document.querySelectorAll('#selections input')
   for (var i = 0; i < selections.length; i++)
   {
-    if(selections[i].checked)
-    {
+    if(selections[i].checked) {
       charArray.push(selections[i].value)
     }
   }
 
-    var all_words_data = []
+  new_data = []
+  console.log(charArray)
 
-    for (var i = 0; i < data.length; i++) {
-      for (var j = 0; j < data[i].vocabulary.length; j++) {
-        for (var k = 0; k < charArray.length; k++) {
-          if (charArray[k] === data[i].name) {
-            all_words_data.push(data[i].vocabulary[j])
-          }
-        }
-      }
+  for (var i = 0; i < charArray.length; i++) {
+    if (true) {
+      new_data.push(data[i])
     }
-
-    all_words_data = d3.nest()
-    .key(function(d) { return d.word })
-    .rollup(function(d) { return d[0].count })
-    .entries(all_words_data)
-
-    all_words_data.sort(function(x, y){
-      return d3.descending(x.value, y.value);
-    })
-
-    all_words_data = all_words_data.slice(0, 100)
+  }
 
     // Add SVGs to DOM
     var div = `#bubbles`;
@@ -65,8 +49,8 @@ this.draw = function (){
     .style("font", "1em sans-serif")
     .text("tooltip");
 
-    var root = d3.hierarchy({children: all_words_data})
-    .sum(function(d) { return d.value })
+    var root = d3.hierarchy({children: new_data})
+    .sum(function(d) { return d.unique_word_count })
 
     var svg = d3.select(div).append(`svg`)
     .attr(`width`, width)
@@ -80,7 +64,7 @@ this.draw = function (){
     .attr(`class`, `node`)
     .attr(`transform`, function(d) { return `translate(${d.x}, ${d.y})` })
     .on("mouseover", function(d) {
-      tooltip.text(d.data.key + ": has been said " + format(d.value) +" times");
+      tooltip.text(d.data.name + ": " + format(d.data.unique_word_count) +" unique words");
       tooltip.style("visibility", "visible");
     })
     .on("mousemove", function() {
@@ -90,13 +74,13 @@ this.draw = function (){
 
     node.append(`circle`)
     .attr(`r`, function(d) { return d.r })
-    .attr(`fill`, function(d) { return color(d.data.key) })
+    .attr(`fill`, function(d) { return color(d.data.name) })
     .attr(`stroke`, `grey`);
 
     node.append(`text`)
     .attr(`dy`, `.4em`)
-    .attr(`font-size`, function(d) { return d.r/d.data.key.length*1.5 })
+    .attr(`font-size`, function(d) { return d.r/d.data.name.length*3 })
     .style(`text-anchor`, `middle`)
-    .text(function(d) { return d.data.key })
+    .text(function(d) { return d.data.name })
   }
 }
