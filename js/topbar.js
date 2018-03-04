@@ -21,7 +21,6 @@ function topbar(data){
        }
      }
    })
-   console.log("charArray = ", charArray)
 
     var root = document.getElementById('topbar');
 
@@ -36,6 +35,8 @@ function topbar(data){
         var checkbox = document.createElement('input');
         checkbox.type = "checkbox";
         checkbox.value = charArray[j]
+        if(j===0)
+        { checkbox.checked=true  }
         var span = document.createElement('span');
         span.classList.add('checkmark');
 
@@ -53,4 +54,26 @@ function topbar(data){
        }
       var submitDiv = document.getElementById('submitButton');
       submitDiv.appendChild(charinput)
+
+      var clearSelections = document.createElement('input')
+      clearSelections.type="submit"
+      clearSelections.value="Clear selections"
+      clearSelections.classList.add('clearButton')
+      clearSelections.onclick = function() {
+        clear()
+       }
+      var submitDiv = document.getElementById('submitButton');
+      submitDiv.appendChild(clearSelections)
+
+function clear(){
+  var selections = document.querySelectorAll('#selections input')
+  for (var i = 0, l = selections.length; i < l; i++)
+  {
+    if(selections[i].checked)
+      selections[i].checked = false;
+  }
+}
+
+
+
 }

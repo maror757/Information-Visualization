@@ -1,6 +1,6 @@
 function calculate(data, banned){
 
-  data = data//.slice(0,100)
+  data = data.slice(0,2200)
 
   var edited_data = []
   var nested_data = d3.nest()
@@ -40,6 +40,8 @@ function calculate(data, banned){
       return d3.descending(x.count, y.count)
     })
 
+    //console.log("vocabulary.length = ", vocabulary.length)
+    if(vocabulary.length>5)//Check that the character has spoken atleast 6 unique words.
     edited_data.push({name: nested_data[i].key, vocabulary: vocabulary})
   }
 

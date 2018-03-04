@@ -3,7 +3,8 @@ function bubbles(data){
   // Edit data
 this.draw = function (){
 
-  document.getElementById("bubbles").innerHTML = ""
+  var asd = document.getElementById("bubbles");
+  asd.innerHTML = ""
 
   var charArray = []
   var selections = document.querySelectorAll('#selections input')
@@ -37,7 +38,7 @@ this.draw = function (){
     })
 
     all_words_data = all_words_data.slice(0, 100)
-    
+
     // Add SVGs to DOM
     var div = `#bubbles`;
     var divTop = `#topbar`;
@@ -79,7 +80,7 @@ this.draw = function (){
     .attr(`class`, `node`)
     .attr(`transform`, function(d) { return `translate(${d.x}, ${d.y})` })
     .on("mouseover", function(d) {
-      tooltip.text(d.data.key + ": " + format(d.value));
+      tooltip.text(d.data.key + ": has been said " + format(d.value) +" times");
       tooltip.style("visibility", "visible");
     })
     .on("mousemove", function() {

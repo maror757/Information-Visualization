@@ -12,6 +12,9 @@ body {
   margin-top: 20px;
   margin-bottom: 2px;
 }
+.clearButton{
+  margin-left: 20px
+}
 
 .submit-top{
 position: relative;
@@ -34,6 +37,12 @@ position: static;
 .bub-right {
   float: right;
   margin-left: 100px;
+}
+
+.sank-bot {
+  float: right;
+  position: relative;
+  margin-top: 20px;
 }
 
 .node rect {
