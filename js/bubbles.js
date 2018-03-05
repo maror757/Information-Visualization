@@ -34,7 +34,7 @@ this.draw = function (){
     var width = $(div).parent().width()
 
     var format = d3.format(`,d`);
-    var color = d3.scaleOrdinal(d3.schemeCategory20)
+    var color = d3.scaleOrdinal(d3.schemeCategory10)
 
     var pack = d3.pack()
     .size([width, height])
