@@ -1,5 +1,6 @@
 function calculate(data) {
 
+  console.log(data)
   data = data//.slice(0, 100)
 
   var min_word_length = 2;
@@ -53,6 +54,8 @@ function calculate(data) {
   edited_data.sort(function(a, b) {
     return b.word_count - a.word_count
   })
+
+  console.log(edited_data)
 
   return edited_data
 }

@@ -16,13 +16,16 @@ this.draw = function (){
 
   new_data = []
 
-  for (var i = 0; i < charArray.length; i++) {
-    for (var j = 0; j < data.length; j++) {
-      if (charArray[i] === data[j].name) {
-        new_data.push(data[j])
+
+  // Only checked
+    for (var i = 0; i < charArray.length; i++) {
+      for (var j = 0; j < data.length; j++) {
+        if (charArray[i] === data[j].name) {
+          new_data.push(data[j])
+        }
       }
     }
-  }
+
 
     // Add SVGs to DOM
     var div = `#bubbles`;
@@ -51,6 +54,8 @@ this.draw = function (){
 
     var root = d3.hierarchy({children: new_data})
     .sum(function(d) { return d.unique_word_count })
+
+    console.log(root);
 
     var svg = d3.select(div).append(`svg`)
     .attr(`width`, width)
