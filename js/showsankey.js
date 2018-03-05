@@ -25,13 +25,11 @@ this.draw = function ()
   //SOURCE https://bl.ocks.org/d3noob/013054e8d7807dff76247b81b0e29030
 
   var units = "Widgets";
-
   var div = `#root3`;
 
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 50, bottom: 10, left: 30},
-    width = $(div).parent().width() - margin.left - margin.right,
-    height = 700 - margin.top - margin.bottom;
+  var width = $(div).parent().width();
+  var height = 700;
 
 // format variables
 var formatNumber = d3.format(",.0f"),    // zero decimal places
@@ -41,11 +39,11 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
 
 // append the svg object to the body of the page
 var svg = d3.select(div).append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width)
+    .attr("height", height)
   .append("g")
     .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+          "translate(0,0)");
 
 // Set the sankey diagram properties
 var sankey = d3.sankey()

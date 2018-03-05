@@ -15,20 +15,20 @@ this.draw = function (){
   }
 
   new_data = []
-  console.log(charArray)
 
   for (var i = 0; i < charArray.length; i++) {
-    if (true) {
-      new_data.push(data[i])
+    for (var j = 0; j < data.length; j++) {
+      if (charArray[i] === data[j].name) {
+        new_data.push(data[j])
+      }
     }
   }
 
     // Add SVGs to DOM
     var div = `#bubbles`;
-    var divTop = `#topbar`;
 
-    var height = 600
-    var width = $(div).parent().width() - $(divTop).width()*2
+    var height = 350
+    var width = $(div).parent().width()
 
     var format = d3.format(`,d`);
     var color = d3.scaleOrdinal(d3.schemeCategory20)
