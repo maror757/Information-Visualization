@@ -4,11 +4,12 @@ d3.queue()
 
 var bubbles, showsankey, topbar
 var edited_data
+var banned = ['DON', 'ISN', 'LL', 'RE', 'DIDN','DOESN']
 
 function draw(error, data){
   if (error) throw error
 
-  edited_data = calculate(data)
+  edited_data = calculate(data, banned)
 
   topbar = new topbar(edited_data)
   bubbles = new bubbles(edited_data)

@@ -55,7 +55,6 @@ this.draw = function (){
     var root = d3.hierarchy({children: new_data})
     .sum(function(d) { return d.unique_word_count })
 
-    console.log(root);
 
     var svg = d3.select(div).append(`svg`)
     .attr(`width`, width)

@@ -1,7 +1,6 @@
-function calculate(data) {
+function calculate(data, banned) {
 
-  console.log(data)
-  data = data//.slice(0, 100)
+  data = data//.slice(0, 10000)
 
   var min_word_length = 2;
   var min_unique_words = 10;
@@ -21,9 +20,14 @@ function calculate(data) {
     lines = lines.toUpperCase();
     var splitwords = lines.split(/\W+/);
 
+
     for (var j = splitwords.length - 1; j > -1; j--) {
-      if (splitwords[j].length <= min_word_length) {
-        splitwords.splice(j, 1)
+      for (var k = 0; k<banned.length; k++)
+      {
+        if (splitwords[j] === banned[k] || splitwords[j].length <= min_word_length) {
+          splitwords.splice(j, 1)
+          break;
+        }
       }
     }
 
@@ -55,7 +59,6 @@ function calculate(data) {
     return b.word_count - a.word_count
   })
 
-  console.log(edited_data)
 
   return edited_data
 }
