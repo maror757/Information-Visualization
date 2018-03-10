@@ -11,7 +11,7 @@ function topbar(data){
        .attr(`width`, width)
        .attr(`height`, height)
 
-	//Read in the 20 characters that speak the most//
+	//Read in the characters//
     var charArray = []
    data.forEach(function (object) {
      for(let prop in object){
@@ -24,6 +24,7 @@ function topbar(data){
 
     var root = document.getElementById('topbar');
 
+      //Create the checkboxes
       for (var j =0; j<charArray.length; j++)
       {
         var myDiv = document.createElement("div")
@@ -45,6 +46,7 @@ function topbar(data){
         root.appendChild(myDiv)
       }
 
+      //Create the submit button
       var charinput = document.createElement('input')
       charinput.type="submit"
       charinput.value="Submit"
@@ -52,9 +54,11 @@ function topbar(data){
         showsankey.draw()
         bubbles.draw()
        }
+       //Add the submit button to the buttons div
       var submitDiv = document.getElementById('submitButton');
       submitDiv.appendChild(charinput)
 
+      //Create the button to clear old selections
       var clearSelections = document.createElement('input')
       clearSelections.type="submit"
       clearSelections.value="Clear selections"
@@ -62,6 +66,7 @@ function topbar(data){
       clearSelections.onclick = function() {
         clear()
        }
+       //Add the clearSelections button to the buttons div
       var submitDiv = document.getElementById('submitButton');
       submitDiv.appendChild(clearSelections)
 

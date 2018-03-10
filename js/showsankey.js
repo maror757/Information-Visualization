@@ -34,7 +34,7 @@ this.draw = function ()
 // format variables
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
-    colorName = d3.scaleOrdinal(d3.schemeCategory10);
+    colorName = d3.scaleOrdinal(d3.schemeCategory20);
     colorWord = d3.scaleOrdinal(d3.schemeCategory20b);
 
 // append the svg object to the body of the page
@@ -198,8 +198,8 @@ function initiateGraph (theGraph, stringName, source, wordArray, numOfWords)
   for(var i = newCharacter ; i < endOfLoop; i++)
   {
     let theNodes = {};
-    if(i%numOfWords==0) //i%6 is used so that every 6th theNodes.name is equal to the characther name stored in "stringName",
-    //and the other 5 should be the most used words used in wordArray
+    if(i%numOfWords==0) //i%numOfWords is used so that every numOfWords:th in theNodes.name is equal to the characther name stored in "stringName",
+    //and the other numOfWords-1 should be the most used words in wordArray
       theNodes.name = stringName;
     else
       theNodes.name = wordArray[i%numOfWords-1].word;
@@ -223,7 +223,6 @@ function initiateGraph (theGraph, stringName, source, wordArray, numOfWords)
     }
     else {
       theLinks.value = scaleValue(wordArray[i%numOfWords-1].count);
-      //theLinks.value = 1;
     }
 
 
