@@ -1,10 +1,11 @@
 function bubbles(data){
 
-  // Edit data
 this.draw = function (){
 
+  // Reset DOM
   document.getElementById("bubbles").innerHTML = ""
 
+  // See which characters that is to be analyzed
   var charArray = []
   var selections = document.querySelectorAll('#selections input')
   for (var i = 0; i < selections.length; i++)
@@ -16,15 +17,13 @@ this.draw = function (){
 
   new_data = []
 
-
-  // Only checked
-    for (var i = 0; i < charArray.length; i++) {
-      for (var j = 0; j < data.length; j++) {
-        if (charArray[i] === data[j].name) {
-          new_data.push(data[j])
-        }
+  for (var i = 0; i < charArray.length; i++) {
+    for (var j = 0; j < data.length; j++) {
+      if (charArray[i] === data[j].name) {
+        new_data.push(data[j])
       }
     }
+  }
 
 
     // Add SVGs to DOM
@@ -36,11 +35,8 @@ this.draw = function (){
     var format = d3.format(`,d`);
     var color = d3.scaleOrdinal(d3.schemeCategory20)
 
-    var pack = d3.pack()
-    .size([width, height])
-    .padding(5)
-
-    var tooltip = d3.select(div)
+	// Toolbar if mouse is hoovering a circle
+	var tooltip = d3.select(div)
     .append("div")
     .style("position", "absolute")
     .style("z-index", "10")
@@ -51,10 +47,14 @@ this.draw = function (){
     .style("border-radius", "6px")
     .style("font", "1em sans-serif")
     .text("tooltip");
+	
+	// Setup data to create bubbles
+    var pack = d3.pack()
+    .size([width, height])
+    .padding(5)
 
     var root = d3.hierarchy({children: new_data})
     .sum(function(d) { return d.unique_word_count })
-
 
     var svg = d3.select(div).append(`svg`)
     .attr(`width`, width)
@@ -76,6 +76,7 @@ this.draw = function (){
     })
     .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
+	// Add bubbles to DOM
     node.append(`circle`)
     .attr(`r`, function(d) { return d.r })
     .attr(`fill`, function(d) { return color(d.data.name) })
